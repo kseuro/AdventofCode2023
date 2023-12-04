@@ -1,0 +1,96 @@
+alias Slices = DynamicVector[slice]
+
+
+fn read_file(file_name: String) raises -> String:
+    """Read file content."""
+    let file_content: String
+
+    with open(file_name, "r") as file:
+        file_content = file.read()
+
+    return file_content
+
+fn split_file_into_slices(file_content: String, delimiter: String) -> Slices:
+    """Split file content into slices by delimiter."""
+    let size: Int = file_content.count(delimiter) + 1
+    var slices: Slices = Slices()
+    var start: Int = 0
+    let end: Int
+    let offset: Int = len(delimiter)
+
+    while (end := file_content.find(delimiter, start)) != -1:
+        slices.push_back(slice(start, start + end))
+        start += end + offset
+    slices.push_back(slice(start, len(file_content)))
+
+    return slices
+
+fn map_vector[T: AnyType, O: AnyType](vector: DynamicVector[T], mapping_fn: fn(elem: T) raises capturing -> O) raises -> DynamicVector[O]:
+    """Map vector with elements of type T to another type O."""
+    var mapped_vector = DynamicVector[O](capacity=len(vector))
+    for i in range(len(vector)):
+        let element = mapping_fn(vector[i])
+        mapped_vector.push_back(element)
+    return mapped_vector
+
+fn capture_values(file_content: String, file_slices: Slices) raises -> DynamicVector[Int]:
+    """Capture first and last integer values from file content, line by line.
+    
+    :param file_content: File content as a single String.
+    :param file_slices: Slices of the file content, split by delimiter.
+
+    :return: Vector of captured values as Int.
+    """
+    @parameter
+    fn line_mapping(line_slice: slice) raises -> Int:
+        let line: String = file_content[line_slice]
+        var first: String = ""
+        var last: String = ""
+
+        # Loop over every element in the line and check if it is a digit.
+        for i in range(len(line)):
+            let char = line[i]
+            # Cannot convert String struct to SIMD, so we need to use
+            # the String buffer to get access to the underlying data storage
+            if isdigit(char._buffer[0]):
+                if not first:
+                    first = char
+                else:
+                    last = char
+        # The calibration value should be a two digit number consisting of the
+        # first and last digit of the line. If there is no last digit,
+        # we reuse the first digit, as in the prompt example.
+        return atol(first + (last or first))
+
+    let values = map_vector[slice, Int](file_slices, line_mapping)
+    return values
+
+fn sum(lhs: Int, rhs: Int) -> Int:
+    """Sum two values."""
+    return lhs + rhs
+
+fn vector_reduce[T: AnyType, O: AnyType](vector: DynamicVector[T], reduce_fn: fn(elem: T, acc: O) -> O, init: O) -> O:
+    """Reduces a vector of type T to a single value of type O."""
+    var accumulator: O = init
+    for i in range(len(vector)):
+        accumulator = reduce_fn(vector[i], accumulator)
+    return accumulator
+
+fn solve_part1(file_name: String) raises -> None:
+    """Solve the part 1 puzzle prompt."""
+    print("Solving part 1...")
+    let file_content: String = read_file(file_name)
+    let file_slices: Slices = split_file_into_slices(file_content, "\n")
+    let values: DynamicVector[Int] = capture_values(file_content, file_slices)
+    let value_sum: Int = vector_reduce[Int, Int](values, sum, 0)
+    print("Sum of all values: " + String(value_sum))
+
+fn solve_part2(file_name: String) raises -> None:
+    """Solve the part 2 puzzle prompt."""
+    print("\nSolving part 2...")
+
+fn main() raises -> None:
+    """Main function."""
+    let file_name: String = "input.txt"
+    solve_part1(file_name)
+    solve_part2(file_name)
