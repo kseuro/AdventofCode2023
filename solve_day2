@@ -1,0 +1,3 @@
+#!/bin/bash
+
+mojo main.mojo 2 day2/input.txt no_output

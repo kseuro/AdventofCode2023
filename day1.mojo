@@ -135,22 +135,15 @@ fn solve_part2(lines: DynamicVector[String], numeric: Bool, verbose: Bool) raise
 
 fn day1(args: VariadicList[StringRef]) raises -> None:
     """Solves day 1 challenge."""
-    print(args[0])
-    let file_path = args[1]
+    print("Advent of Code: Day 1")
+    let file_path = args[2]
     print("File path:", file_path)
 
     let file_content = read_file(file_path)
     let lines = split_string(file_content, "\n", True)
 
-    let no_output: Bool = args[2] == "no_output"
+    let verbose: Bool = not args[3] == "no_output"
 
-    if no_output:
-        solve_part1(lines, numeric=True, verbose=False)
-    else:
-        solve_part1(lines, numeric=True, verbose=True)
-
-    if no_output:
-        solve_part2(lines, numeric=False, verbose=False)
-    else:
-        solve_part2(lines, numeric=False, verbose=True)
+    solve_part1(lines, numeric=True, verbose=verbose)
+    solve_part2(lines, numeric=False, verbose=verbose)
 

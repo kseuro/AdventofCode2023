@@ -1,6 +1,15 @@
 from sys import argv
 
-from day1 import day1 as day
+fn day_selection(args: VariadicList[StringRef]) raises -> None:
+    let day = args[1]
+    if day == "1":
+        from day1 import day1
+        day1(args)
+    elif day == "2":
+        from day2 import day2
+        day2(args)
+    else:
+        print("Invalid day")
 
 fn main() raises -> None:
-    day(argv())
+    day_selection(argv())
