@@ -1,0 +1,30 @@
+fn read_file(file_name: Path) raises -> String:
+    """Read file content as a single String.
+    
+    :param file_name: The path to the file to read.
+    """
+    return file_name.read_text()
+
+fn print_string_vector(lines: DynamicVector[String]) -> None:
+    """Prints a vector of strings.
+    
+    **Arguments**
+
+    lines: DynamicVector of strings to print.
+    """
+    for i in range(lines.__len__()):
+        print(i, ": ", lines[i])
+
+
+fn map_vector[T: CollectionElement, O: CollectionElement](vector: DynamicVector[T], mapping_fn: fn(elem: T) -> O) -> DynamicVector[O]:
+    """Maps a vector of type T to a vector of type O.
+    
+    :param vector: The vector to map.
+    :param mapping_fn: The mapping function to apply to each element.
+
+    :returns: A vector of type O.
+    """
+    var mapped = DynamicVector[O](capacity=len(vector))
+    for i in range(len(vector)):
+        mapped.push_back(mapping_fn(vector[i]))
+    return mapped

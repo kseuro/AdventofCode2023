@@ -1,0 +1,23 @@
+from utils.static_tuple import StaticTuple
+
+fn split_string(base_string: String, delimiter: String, recurring: Bool = False) raises -> DynamicVector[String]:
+    """Splits a string on a delimiter and returns a vector of slices.
+    
+    :param base_string: The string to split.
+    :param delimiter: The delimiter to split on.
+    :param recurring: Whether to include recurring delimiters in the result.
+
+    :returns: A vector of slices.
+    """
+    let base_split = base_string.split(delimiter)
+
+    if not recurring:
+        return base_split
+    
+    var filtered = DynamicVector[String](capacity=len(base_split))
+    let current: String
+
+    for i in range(len(base_split)):
+        if current := base_split[i]:
+            filtered.push_back(current^)
+    return filtered

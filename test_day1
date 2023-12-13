@@ -1,0 +1,3 @@
+#!/bin/bash
+
+mojo main.mojo day1/test.txt
