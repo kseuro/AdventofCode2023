@@ -1,7 +1,7 @@
 from math import max, min
 from helpers.utils import read_file
 from helpers.strings import split_string
-from utils.vector import InlinedFixedVector
+from collections.vector import InlinedFixedVector
 
 alias MAX_RED: Int = 12
 alias MAX_GREEN: Int = 13
