@@ -1,5 +1,4 @@
 from helpers.utils import read_file
-from utils.static_tuple import StaticTuple
 
 
 @value

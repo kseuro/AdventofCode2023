@@ -1,0 +1,15 @@
+#!/bin/bash
+
+day=$1
+directory="day${day}"
+
+if [ ! -d $directory ]; then
+	echo "Setting up day${day}"
+	mkdir $directory
+	touch "${directory}/__init__.mojo"
+	touch "${directory}/input.txt"
+	touch "${directory}/test.txt"
+	touch "${directory}/${directory}.mojo"
+else
+	echo "Day ${day} already exists"
+fi

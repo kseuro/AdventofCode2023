@@ -1,3 +1,0 @@
-#!/bin/bash
-
-mojo main.mojo 3 day3/input.txt no_output

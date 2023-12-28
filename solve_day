@@ -1,0 +1,5 @@
+#!/bin/bash
+
+day=$1
+
+mojo main.mojo $day "day${day}/input.txt" no_output

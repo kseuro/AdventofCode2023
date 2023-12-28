@@ -15,6 +15,10 @@ fn day_selection(args: VariadicList[StringRef]) raises -> None:
         from day3.day3 import day3
 
         day3(args)
+    elif day == "4":
+        from day4.day4 import day4
+
+        day4(args)
     else:
         print("Invalid day")
 
